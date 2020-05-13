@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="black">
+    <title></title>
+</head>
+<body class="container black">
+  <div class="container center">
+    <div class="col s12 m7" style="-webkit-box-shadow: 0px 0px 106px -52px rgba(255,255,255,1);
+    -moz-box-shadow: 0px 0px 106px -52px rgba(255,255,255,1);
+    box-shadow: 0px 0px 106px -52px rgba(255,255,255,1);">
+      <div class="card hoverable">
+        <div class="card-image">
+          <img src="https://i.pinimg.com/originals/30/1c/b5/301cb5693ff1783e734dc79a22ed0a3d.jpg">
+          <h1 class="card-title white-text text-white" style="font-weight: bold; text-shadow: 1px 2px 3px #666;">Thriller - Michael Jackson</h1>
+        </div>
+        <div class="card-content">
+          <p>
+          </p>
+          <div id="waveform"></div>
+        </div>
+        <div class="card-action col s12 m4">
+            <a class="waves-effect waves-light btn  black" id="btn-play"><i class="material-icons left">play_circle_filled</i>Play</a>
+            <a class="waves-effect waves-light btn  black" id="btn-pause"><i class="material-icons left">pause_circle_filled</i>Pause</a>
+            <a class="waves-effect waves-light btn  black" id="btn-stop"><i class="material-icons left">stop</i>Stop</a>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+
+
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+<script>
+var wavesurfer = WaveSurfer.create({
+container: '#waveform',
+waveColor: 'black',
+progressColor: 'red'
+});
+wavesurfer.load('Michael Jackson - Thriller.mp3');  
+</script>
+
+
+
+
+
+    <script>
+        // Guardar los 3 botones en algun objeto
+        var buttons = {
+            play: document.getElementById("btn-play"),
+            pause: document.getElementById("btn-pause"),
+            stop: document.getElementById("btn-stop")
+        };
+
+        // Crea una instancia de wave surfer con su configuración
+
+
+        // Manipular boton de reproducir
+        buttons.play.addEventListener("click", function(){
+            wavesurfer.play();
+
+            // Activar/Desactivar respectivamente botones
+            buttons.stop.disabled = false;
+            buttons.pause.disabled = false;
+            buttons.play.disabled = true;
+        }, false);
+
+        // Manipular boton de pausa
+        buttons.pause.addEventListener("click", function(){
+            wavesurfer.pause();
+
+            // Activar/Desactivar respectivamente botones
+            buttons.pause.disabled = true;
+            buttons.play.disabled = false;
+        }, false);
+
+
+        // Manipular boton de detener
+        buttons.stop.addEventListener("click", function(){
+            wavesurfer.stop();
+
+            // Activar/Desactivar respectivamente botones
+            buttons.pause.disabled = true;
+            buttons.play.disabled = false;
+            buttons.stop.disabled = true;
+        }, false);
+
+
+        // Agregar un event listener para activar el boton de reproducir una vez que el audio este cargado
+        wavesurfer.on('ready', function () {
+            buttons.play.disabled = false;
+        });
+        
+        // Si quieres un modo responsivo (cuando el usuario redimensiona la ventana)
+        // las ondas serán igualmente reproducibles
+        window.addEventListener("resize", function(){
+            // Obten el progreso de acuerdo a la posición del cursor
+            var currentProgress = wavesurfer.getCurrentTime() / wavesurfer.getDuration();
+
+            // Resetear gráfica
+            wavesurfer.empty();
+            wavesurfer.drawBuffer();
+            // Colocar posición original
+            wavesurfer.seekTo(currentProgress);
+
+            // Activar/Desactivar respectivamente botones
+            buttons.pause.disabled = true;
+            buttons.play.disabled = false;
+            buttons.stop.disabled = false;
+        }, false);
+    </script>
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<p class="center" style="font-size: larger; color: white;">By <a href="https://juanpfrancos.azurewebsites.net/" target="_blank">Juanpfrancos</a></p>
+
+</body>
+</html>
